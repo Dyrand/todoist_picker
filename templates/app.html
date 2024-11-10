@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='split_container.css')}}" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type=text/javascript>
+    let value_updates = {}
+    $(function() {
+      $('button#choose_button').on('click', function(e) {
+        e.preventDefault()
+        $.getJSON('/make_choice',
+            function(data) {
+                result_div = $('div#result');
+                result_div.html("");
+                item_count = data["result"].length;
+                $.each(data["result"], function(index, value) {
+                 res_div = $('<div />', {'text': value});
+                 if(index == item_count - 1)
+                 {
+                    res_div.addClass(data["rarity"]);
+                    res_div.addClass("picked");
+                 } 
+                 else{
+                    res_div.css("padding-left",(index*1)+"em");
+                 }
+                 res_div.appendTo(result_div)});
+
+                var target = $("#"+data["id"])[0].scrollIntoView({
+                    "behavior":"smooth",
+                    "block":"center"
+                });
+        });
+      });
+    });
+
+    $(function() {
+        $('button#save_selection').on('click',function(e){
+            e.preventDefault();
+            $.ajax({
+                url:"/save_weights", 
+                type: "PUT",
+                data: JSON.stringify(value_updates),
+                contentType:"application/json; charset=utf-8", 
+                dataType:"json"});
+            for (const [id,new_placeholder] of Object.entries(value_updates)){
+                let active_button = $(`#${id}`);
+                active_button.removeClass('changed');
+                active_button.attr("Placeholder",new_placeholder);
+                delete value_updates[id];
+            }
+        })
+    });
+
+    function updatePlaceholder(id){
+
+    }
+
+    function valueChange(id) {
+        let active_button = $(`#${id}`);
+        let value = active_button.val();
+        if(value != active_button.attr("placeholder")){
+            active_button.addClass('changed');
+            value_updates[id] = value
+        }
+        else{
+            active_button.removeClass('changed');
+            delete value_updates[id]
+        }
+        console.log(value_updates)
+    }
+</script>
+<head>
+    <meta charset="utf-8" />
+    <title>Todoist Randomizer</title>
+</head>
+<body>
+    <div class="split-container">
+        <div class="split-left">
+            <button id="save_selection">save weights</button>
+            <button id="choose_button">select something</button>
+            <div id="result"></div>
+        </div>
+        <div class="split-right">
+            <ul>
+                {% for choice_item in choice_items.values() recursive %}
+                <li {% if choice_item.type_of == "task" %}
+                    class="{{ choice_item.get_rarity() }}"
+                    {% endif %}>
+                    {{ choice_item.name }}: 
+                    <input class="weight" id="{{ choice_item.id }}"
+                           placeholder="{{ choice_item.weight }}"
+                           oninput="valueChange({{ choice_item.id }})"
+                           type="number" value="{{ choice_item.weight }}"></input>
+                    {% if choice_item.type_of == "task" %}
+                    <div>{{ choice_item.get_flat_probability_formatted() }}</div>
+                    {% endif %}
+                    {% if choice_item.sub_choices %}
+                    <ul>{{ loop(choice_item.sub_choices.values()) }}</ul>
+                    {% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

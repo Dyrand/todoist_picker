@@ -1,0 +1,95 @@
+body {
+	font-family: 'Gloria Hallelujah', cursive;
+	font-size: 1.4rem;
+	background: whitesmoke;
+	margin: 0;
+	place-items: center;
+	min-height: 100vh;
+    overflow-y: hidden;
+}
+
+ul {
+	list-style-position: inside;
+	max-width: 100%;
+	background: white;
+	box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.15);
+	padding: 0;
+	margin: 0;
+	border-radius: 0.1rem;
+}
+
+li {
+	padding: 0 0 0 1rem;
+}
+
+li:not(:last-child) {
+	border-bottom: 1px solid lightblue;
+}
+
+li:first-child {
+	margin-top: 1rem;
+}
+
+li:last-child {
+	margin-bottom: 1rem;
+}
+
+input[type="number"]{
+    width:3em
+}
+
+button {
+    font-size: 0.8em;
+    font-weight: 400;
+    padding: 10px 30px 10px 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 5px 0 rgba(50, 50, 50, 0.75);
+}
+
+input.changed {
+    border-color: blue;
+}
+
+div#result{
+	box-shadow: 0 4px 5px 0 rgba(50, 50, 50, 0.75);
+}
+
+div#result > div{
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.picked{
+	text-align: center;
+	border-style: dashed;
+}
+
+.rarity_1{
+	background-color: #7BEAF4;
+}
+
+.rarity_2{
+	background-color: #7ACEF5;
+}
+
+.rarity_3{
+	background-color: #999EFF;
+}
+
+.rarity_4{
+	background-color: #CC85B5;
+}
+
+.rarity_5{
+	background-color: #FF6B6B;
+}
+
+.rarity_6{
+	background-color: #FFF178;
+}
+
+.rarity_0{
+	background-color: #D8D8D8;
+}

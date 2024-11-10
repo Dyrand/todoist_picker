@@ -1,0 +1,31 @@
+.split-container {
+    height: 100vh;
+    display: flex;
+    width: 100%;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.split-left,
+.split-right {
+    overflow-y: auto;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    color: #333333;
+}
+
+.split-left {
+    border: 2px solid grey;
+}
+
+.split-left{
+    flex: 1;
+}
+
+.split-right {
+    flex: 2;
+    background-color: #f6f7fa;
+    border: 2px solid grey;
+}
