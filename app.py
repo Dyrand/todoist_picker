@@ -287,4 +287,4 @@ def save_weight():
                          (value,id))
 
     db_s.commit()
-    return 
+    return {}
